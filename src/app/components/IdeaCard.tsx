@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTheme } from 'next-themes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRandom, faSpinner } from '@fortawesome/free-solid-svg-icons';
@@ -42,9 +42,10 @@ export default function IdeaCard() {
     setTimeout(() => {
       fetchRandomIdea();
     }, 0);
-  }, []);
+  }, [fetchRandomIdea]);
 
-  const fetchRandomIdea = async () => {
+  // 使用useCallback包装fetchRandomIdea函数以避免无限循环
+  const fetchRandomIdea = useCallback(async () => {
     setLoading(true);
     try {
       // 从API获取数据
@@ -59,7 +60,7 @@ export default function IdeaCard() {
       console.error(isLoaded && language === 'zh' ? '获取随机点子失败:' : 'Failed to fetch random idea:', error);
       setLoading(false);
     }
-  };
+  }, [isLoaded, language]);
 
   // 基本样式
   const cardContainerStyle = {
