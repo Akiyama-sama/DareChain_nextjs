@@ -1,14 +1,24 @@
 import { PrismaClient } from '@prisma/client';
 
-// 创建一个全局变量来存储Prisma客户端实例
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+// 创建Prisma客户端实例
+let prisma: PrismaClient;
 
-// 声明prisma客户端
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({
-    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+if (process.env.NODE_ENV === 'production') {
+  // 在生产环境中创建新的PrismaClient实例
+  prisma = new PrismaClient({
+    log: ['error'],
   });
+} else {
+  // 在开发环境中，为了防止热重载导致多个实例，使用全局变量
+  // @ts-expect-error - 全局变量扩展
+  globalThis.__prisma = globalThis.__prisma || new PrismaClient({
+    log: ['query', 'error', 'warn'],
+  });
+  // @ts-expect-error - 全局变量扩展
+  prisma = globalThis.__prisma;
+  
+  // 确保连接使用的是最新的环境变量
+  prisma.$connect();
+}
 
-// 在开发环境中，为每次热重载保留连接
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma; 
+export { prisma }; 
