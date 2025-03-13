@@ -12,5 +12,5 @@ model Idea {
   id             String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   chineseContent String
   englishContent String?
-  createTime     DateTime @default(now()) @db.Time(6)
+  createTime     DateTime @default(now()) @db.Timestamp(6)
 }
