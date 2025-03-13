@@ -48,11 +48,17 @@ export default function IdeaCard() {
     setLoading(true);
     try {
       // 从API获取数据
+      console.log('Fetching random idea...');
       const response = await fetch('/api/ideas/random');
+      
       if (!response.ok) {
-        throw new Error('Failed to fetch idea');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('API response not OK:', response.status, errorData);
+        throw new Error(`Failed to fetch idea: ${response.status} ${errorData.error || ''}`);
       }
+      
       const data = await response.json();
+      console.log('Received idea data:', data);
       setIdea(data);
       setLoading(false);
     } catch (error) {
