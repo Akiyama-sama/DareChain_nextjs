@@ -1,0 +1,32 @@
+@import "tailwindcss/preflight";
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 47.4% 11.2%;
+  --accent: 23 100% 50%;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --accent: 23 100% 50%;
+}
+
+body {
+  background-color: #ffffff;
+  color: #171717;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+/* 添加平滑过渡效果 */
+* {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
