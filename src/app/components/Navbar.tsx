@@ -29,7 +29,6 @@ export default function Navbar() {
 
   const [hoverLang, setHoverLang] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
-  const [hoverGithub, setHoverGithub] = useState(false);
   
   // 确保在客户端完全加载前使用默认的暗色/亮色模式
   const isDark = mounted ? theme === 'dark' : false;
@@ -148,7 +147,7 @@ export default function Navbar() {
   });
 
   const githubLinkStyle = {
-    color: hoverGithub ? '#f97316' : (isDark ? '#d1d5db' : '#374151'),
+    color: (isDark ? '#d1d5db' : '#374151'),
     transition: 'color 0.3s ease',
     cursor: 'pointer',
     fontSize: '1.25rem'
