@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSun, faMoon, faCode, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faSun, faMoon, faLanguage } from '@fortawesome/free-solid-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { useLanguage } from '../contexts/LanguageContext';
 
 // 语言文本配置
@@ -25,9 +26,10 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, isLoaded } = useLanguage();
   const [mounted, setMounted] = useState(false);
-  const [hoverApi, setHoverApi] = useState(false);
+
   const [hoverLang, setHoverLang] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const [hoverGithub, setHoverGithub] = useState(false);
   
   // 确保在客户端完全加载前使用默认的暗色/亮色模式
   const isDark = mounted ? theme === 'dark' : false;
@@ -92,11 +94,6 @@ export default function Navbar() {
     marginRight: '0.5rem'
   };
 
-  const apiLinkStyle = {
-    color: hoverApi ? '#f97316' : (isDark ? '#d1d5db' : '#374151'),
-    transition: 'color 0.3s ease'
-  };
-
   const langButtonStyle = {
     color: hoverLang ? '#f97316' : (isDark ? '#d1d5db' : '#374151'),
     transition: 'color 0.3s ease',
@@ -149,6 +146,13 @@ export default function Navbar() {
       backgroundColor: isDark ? '#374151' : '#f3f4f6'
     }
   });
+
+  const githubLinkStyle = {
+    color: hoverGithub ? '#f97316' : (isDark ? '#d1d5db' : '#374151'),
+    transition: 'color 0.3s ease',
+    cursor: 'pointer',
+    fontSize: '1.25rem'
+  };
 
   // 确保在客户端渲染前后DOM结构一致
   const renderLanguageMenu = () => {
@@ -204,18 +208,20 @@ export default function Navbar() {
                 {renderLanguageMenu()}
               </div>
             )}
+            {
+              mounted &&(
+                <Link
+                  href="https://github.com/Akiyama-sama/DareChain_nextjs" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={githubLinkStyle}
+                  aria-label="GitHub"
+                >
+                  <FontAwesomeIcon icon={faGithub} />
+                </Link>
+              )
+            }
             
-            <Link 
-              href="/api" 
-              style={apiLinkStyle}
-              onMouseEnter={() => setHoverApi(true)}
-              onMouseLeave={() => setHoverApi(false)}
-            >
-              <div style={iconWithTextStyle}>
-                <FontAwesomeIcon icon={faCode} />
-                <span>{t.api}</span>
-              </div>
-            </Link>
             {mounted && (
               <button
                 onClick={toggleTheme}
